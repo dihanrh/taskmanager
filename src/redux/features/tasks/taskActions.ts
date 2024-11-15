@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as api from '../../../services/api/api';
-import { Task } from './taskTypes';
+import { Task } from '../../../types/taskTypes';
 
 export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async () => {
   return await api.fetchTasksAPI();

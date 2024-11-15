@@ -1,5 +1,5 @@
 import apiClient from '../config/apiClient';
-import { Task } from '../../redux/features/tasks/taskTypes';
+import { Task } from '../../types/taskTypes';
 
 const TASKS_ENDPOINT = '/tasks';
 
