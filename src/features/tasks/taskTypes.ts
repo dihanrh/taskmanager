@@ -7,8 +7,6 @@ export interface Task {
     tags: string[];
   }
   
-  export type PriorityLevel = 'Low' | 'Medium' | 'High';
-  
   export interface TaskState {
     tasks: Task[];
     loading: boolean;
