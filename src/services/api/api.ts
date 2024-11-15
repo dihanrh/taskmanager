@@ -1,5 +1,5 @@
-import apiClient from '../services/apiClient';
-import { Task } from '../features/tasks/taskTypes';
+import apiClient from '../config/apiClient';
+import { Task } from '../../features/tasks/taskTypes';
 
 const TASKS_ENDPOINT = '/tasks';
 
