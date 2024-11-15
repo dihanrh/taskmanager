@@ -1,13 +1,16 @@
+import React from 'react';
+import Layout from '../src/layout/Layout';
+import { useSelector } from 'react-redux';
+import { RootState } from '../src/redux/store';
 
-import './App.css'
-
-function App() {
+const App: React.FC = () => {
+  const darkMode = useSelector((state: RootState) => state.theme.darkMode);
 
   return (
-    <>
-    <div>Task</div>
-    </>
-  )
-}
+    <div className={darkMode ? 'dark' : ''}>
+      <Layout />
+    </div>
+  );
+};
 
-export default App
+export default App;
