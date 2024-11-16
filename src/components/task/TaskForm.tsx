@@ -5,7 +5,8 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { createTask, updateTask } from "../../redux/features/tasks/taskActions";
 import { fetchTags, createTag } from "../../redux/features/tag/tagActions";
 import CreatableSelect from "react-select/creatable";
-import  { MultiValue } from "react-select";
+import { MultiValue } from "react-select";
+import ConfirmationModal from "../common/ConfirmationModal";
 
 interface TaskFormProps {
   initialTask?: Task;
@@ -13,6 +14,7 @@ interface TaskFormProps {
 }
 
 const TaskForm: React.FC<TaskFormProps> = ({ initialTask, onClose }) => {
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const dispatch = useAppDispatch();
   const { tags, loading } = useAppSelector((state) => state.tags);
 
@@ -47,7 +49,9 @@ const TaskForm: React.FC<TaskFormProps> = ({ initialTask, onClose }) => {
     }
   };
 
-  const handleTagChange = (selectedOptions: MultiValue<{ value: string; label: string }>) => {
+  const handleTagChange = (
+    selectedOptions: MultiValue<{ value: string; label: string }>
+  ) => {
     const selectedTags: Tag[] = selectedOptions.map((opt) => ({
       id: opt.value,
       name: opt.label,
@@ -56,6 +60,14 @@ const TaskForm: React.FC<TaskFormProps> = ({ initialTask, onClose }) => {
       ...task,
       tags: selectedTags,
     });
+  };
+
+  const confirmSaveTask = () => {
+    if (task.title.trim() === "") {
+      alert("Task title is required.");
+      return;
+    }
+    setShowConfirmation(true);
   };
 
   const handleSubmit = () => {
@@ -145,11 +157,19 @@ const TaskForm: React.FC<TaskFormProps> = ({ initialTask, onClose }) => {
         </button>
         <button
           className="px-4 py-2 bg-blue-500 text-white rounded"
-          onClick={handleSubmit}
+          onClick={confirmSaveTask}
         >
           Save
         </button>
       </div>
+      {showConfirmation && (
+        <ConfirmationModal
+          title="Save Task"
+          message="Are you sure you want to save this task?"
+          onConfirm={handleSubmit}
+          onCancel={() => setShowConfirmation(false)}
+        />
+      )}
     </div>
   );
 };

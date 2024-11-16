@@ -3,14 +3,18 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { fetchTasks, deleteTask } from "../../redux/features/tasks/taskActions";
 import { selectTasks } from "../../redux/features/tasks/selectors";
 import TaskForm from "./TaskForm";
+import ConfirmationModal from "../common/ConfirmationModal";
 import { Task } from "../../types/taskTypes";
 import { formatDate } from "../../utils/formatDate";
 
 const TaskList: React.FC = () => {
   const dispatch = useAppDispatch();
   const tasks = useAppSelector(selectTasks);
+
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchTasks());
@@ -26,6 +30,19 @@ const TaskList: React.FC = () => {
     setIsFormOpen(false);
   };
 
+  const confirmDeleteTask = (task: Task) => {
+    setTaskToDelete(task);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteTask = () => {
+    if (taskToDelete) {
+      dispatch(deleteTask(taskToDelete.id));
+    }
+    setTaskToDelete(null);
+    setIsDeleteModalOpen(false);
+  };
+
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4 dark:text-white">Task List</h1>
@@ -34,6 +51,15 @@ const TaskList: React.FC = () => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <TaskForm initialTask={editingTask || undefined} onClose={closeForm} />
         </div>
+      )}
+
+      {isDeleteModalOpen && (
+        <ConfirmationModal
+          title="Delete Task"
+          message={`Are you sure you want to delete the task "${taskToDelete?.title}"?`}
+          onConfirm={handleDeleteTask}
+          onCancel={() => setIsDeleteModalOpen(false)}
+        />
       )}
 
       <ul className="space-y-2">
@@ -78,7 +104,7 @@ const TaskList: React.FC = () => {
               </button>
               <button
                 className="px-2 py-1 bg-red-500 text-white rounded"
-                onClick={() => dispatch(deleteTask(task.id))}
+                onClick={() => confirmDeleteTask(task)}
               >
                 Delete
               </button>
