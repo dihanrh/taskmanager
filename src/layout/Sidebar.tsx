@@ -6,7 +6,7 @@ const Sidebar: React.FC = () => {
       <div className="p-4 text-center font-bold text-lg">
         Task Manager
       </div>
-      <ul className="space-y-4 mt-8">
+      <ul >
         <li>
           <a href="#" className="block py-2 px-4 hover:bg-gray-700">All Tasks</a>
         </li>

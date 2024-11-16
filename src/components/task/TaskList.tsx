@@ -32,10 +32,7 @@ const TaskList: React.FC = () => {
 
       {isFormOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <TaskForm
-            initialTask={editingTask || undefined}
-            onClose={closeForm}
-          />
+          <TaskForm initialTask={editingTask || undefined} onClose={closeForm} />
         </div>
       )}
 
@@ -61,9 +58,9 @@ const TaskList: React.FC = () => {
                 <strong>Tags:</strong>{" "}
                 {task.tags.length > 0 ? (
                   <ul className="list-disc ml-5">
-                    {task.tags.map((tag, index) => (
-                      <li key={index} className="dark:text-gray-300">
-                        {tag}
+                    {task.tags.map((tag) => (
+                      <li key={tag.id} className="dark:text-gray-300">
+                        {tag.name}
                       </li>
                     ))}
                   </ul>

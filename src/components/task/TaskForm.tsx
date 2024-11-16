@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Task } from "../../types/taskTypes";
-import { useAppDispatch } from "../../redux/hooks";
+import { Tag } from "../../types/tagTypes";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { createTask, updateTask } from "../../redux/features/tasks/taskActions";
+import { fetchTags, createTag } from "../../redux/features/tag/tagActions";
+import CreatableSelect from "react-select/creatable";
+import  { MultiValue } from "react-select";
 
 interface TaskFormProps {
   initialTask?: Task;
@@ -10,23 +14,49 @@ interface TaskFormProps {
 
 const TaskForm: React.FC<TaskFormProps> = ({ initialTask, onClose }) => {
   const dispatch = useAppDispatch();
+  const { tags, loading } = useAppSelector((state) => state.tags);
+
   const [task, setTask] = useState<Task>(
     initialTask || {
       id: 0,
       title: "",
       description: "",
       dueDate: "",
-      createdAt: "",
+      createdAt: new Date().toISOString(),
       priority: "Low",
       tags: [],
     }
   );
 
   useEffect(() => {
+    dispatch(fetchTags());
     if (initialTask) {
       setTask(initialTask);
     }
-  }, [initialTask]);
+  }, [dispatch, initialTask]);
+
+  const handleCreateTag = async (inputValue: string) => {
+    const newTag: Partial<Tag> = { name: inputValue };
+    const result = await dispatch(createTag(newTag));
+
+    if (result.meta.requestStatus === "fulfilled") {
+      setTask((prevTask) => ({
+        ...prevTask,
+        tags: [...prevTask.tags, result.payload as Tag],
+      }));
+    }
+  };
+
+  const handleTagChange = (selectedOptions: MultiValue<{ value: string; label: string }>) => {
+    const selectedTags: Tag[] = selectedOptions.map((opt) => ({
+      id: opt.value,
+      name: opt.label,
+    }));
+    setTask({
+      ...task,
+      tags: selectedTags,
+    });
+  };
 
   const handleSubmit = () => {
     if (task.title.trim() === "") {
@@ -41,6 +71,13 @@ const TaskForm: React.FC<TaskFormProps> = ({ initialTask, onClose }) => {
     }
     onClose();
   };
+
+  const tagOptions = tags.map((tag) => ({
+    value: tag.id,
+    label: tag.name,
+  }));
+
+  console.log(fetchTags);
 
   return (
     <div className="p-4 bg-white dark:bg-gray-800 rounded shadow">
@@ -89,17 +126,14 @@ const TaskForm: React.FC<TaskFormProps> = ({ initialTask, onClose }) => {
       </div>
       <div className="my-2">
         <label className="block text-sm dark:text-gray-300">Tags</label>
-        <input
-          type="text"
-          placeholder="Comma-separated tags"
-          value={task.tags.join(", ")}
-          onChange={(e) =>
-            setTask({
-              ...task,
-              tags: e.target.value.split(",").map((t) => t.trim()),
-            })
-          }
-          className="w-full border rounded px-2 py-1 dark:bg-gray-700 dark:text-white"
+        <CreatableSelect
+          isMulti
+          isLoading={loading}
+          options={tagOptions}
+          value={task.tags.map((tag) => ({ value: tag.id, label: tag.name }))}
+          onChange={handleTagChange}
+          onCreateOption={handleCreateTag}
+          className="dark:text-black"
         />
       </div>
       <div className="flex justify-end gap-2 mt-4">
