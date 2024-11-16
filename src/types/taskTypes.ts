@@ -1,3 +1,5 @@
+import { Tag } from "./tagTypes";
+
 export interface Task {
     id: number;
     title: string;
@@ -5,7 +7,7 @@ export interface Task {
     dueDate: string;
     createdAt: string;
     priority: 'Low' | 'Medium' | 'High';
-    tags: string[];
+    tags: Tag[];
   }
   
   export interface TaskState {
