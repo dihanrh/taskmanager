@@ -1,7 +1,6 @@
 import React from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
-import Hero from "./Hero";
 import Home from "../pages/Home";
 
 const Layout: React.FC = () => {
@@ -10,7 +9,6 @@ const Layout: React.FC = () => {
       <Sidebar />
       <div className="flex-1 flex flex-col ml-64 pt-16 md:ml-64">
         <Navbar />
-        <Hero />
         <div className="flex-1 p-6 overflow-auto">
           <Home />
         </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import { FiFilter } from "react-icons/fi"; // Import the filter icon
 
 interface PriorityFilterProps {
   selectedPriority: string;
@@ -7,12 +8,12 @@ interface PriorityFilterProps {
 
 const PriorityFilter: React.FC<PriorityFilterProps> = ({ selectedPriority, onPriorityChange }) => {
   return (
-    <div className="my-4">
-      <label className="block text-sm dark:text-gray-300">Filter by Priority</label>
+    <div className="relative flex items-center space-x-2">
+       <FiFilter className="text-gray-500 dark:text-white" />
       <select
         value={selectedPriority}
         onChange={(e) => onPriorityChange(e.target.value)}
-        className=" border rounded px-2 py-1 dark:bg-gray-700 dark:text-white"
+        className="border rounded px-2 py-1 dark:bg-gray-700 dark:text-white"
       >
         <option value="">All Priorities</option>
         <option value="High">High</option>

@@ -1,5 +1,6 @@
 import React from "react";
 import { useSearch } from "../../hooks/useSearch";
+import { FiSearch } from "react-icons/fi";
 
 interface SearchComponentProps {
   onSearch: (value: string) => void;
@@ -18,13 +19,15 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
   };
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="relative flex items-center space-x-2">
+      <FiSearch className="absolute left-3 text-gray-500" />
+      
       <input
         type="text"
         value={query}
         onChange={handleInputChange}
         placeholder={placeholder}
-        className="p-2 border rounded w-full"
+        className="pl-10 p-2 border rounded" 
       />
     </div>
   );

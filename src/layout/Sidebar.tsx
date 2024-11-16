@@ -15,15 +15,12 @@ const Sidebar: React.FC = () => {
       } bg-gray-900 dark:bg-gray-800 h-full`}
     >
       <div className="p-4">
-        {/* Sidebar Toggle Button */}
         <button
           onClick={toggleSidebar}
           className="text-white text-2xl focus:outline-none"
         >
           {isSidebarCollapsed ? <FaBars /> : <FaTimes />}
         </button>
-
-        {/* Sidebar Content */}
         <h2
           className={`text-white font-bold text-2xl mt-4 ${
             isSidebarCollapsed ? "hidden" : ""
@@ -36,8 +33,6 @@ const Sidebar: React.FC = () => {
           <li className="text-white">Tasks</li>
           <li className="text-white">Settings</li>
         </ul>
-
-        {/* Icon-only content when sidebar is collapsed */}
         <ul
           className={`mt-4 space-y-2 ${!isSidebarCollapsed ? "hidden" : ""}`}
         >

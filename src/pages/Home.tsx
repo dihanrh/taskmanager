@@ -8,12 +8,14 @@ const Home: React.FC = () => {
   const [selectedPriority, setSelectedPriority] = useState<string>("");
 
   return (
-    <div className="p-6">
-      <SearchComponent onSearch={setSearchQuery} placeholder="Search tasks..." />
-      <PriorityFilter
-        selectedPriority={selectedPriority}
-        onPriorityChange={setSelectedPriority}
-      />
+    <div>
+      <div className="flex space-x-4 mb-4">
+        <SearchComponent onSearch={setSearchQuery} placeholder="Search tasks..." />
+        <PriorityFilter
+          selectedPriority={selectedPriority}
+          onPriorityChange={setSelectedPriority}
+        />
+      </div>
       <TaskList searchQuery={searchQuery} priority={selectedPriority} />
     </div>
   );
