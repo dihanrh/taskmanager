@@ -3,6 +3,7 @@ export interface Task {
     title: string;
     description: string;
     dueDate: string;
+    createdAt: string;
     priority: 'Low' | 'Medium' | 'High';
     tags: string[];
   }
