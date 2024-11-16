@@ -7,6 +7,7 @@ export interface Task {
     dueDate: string;
     createdAt: string;
     priority: 'Low' | 'Medium' | 'High';
+    category: string;
     tags: Tag[];
   }
   
