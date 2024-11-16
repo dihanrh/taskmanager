@@ -5,6 +5,8 @@ import { createTask, updateTask } from "../redux/features/tasks/taskActions";
 import { Task } from "../types/taskTypes";
 import { Tag } from "../types/tagTypes";
 import { MultiValue } from "react-select";
+import { toast } from "react-toastify";
+
 
 export const useTaskForm = (initialTask?: Task, onClose?: () => void) => {
   const dispatch = useAppDispatch();
@@ -58,8 +60,11 @@ export const useTaskForm = (initialTask?: Task, onClose?: () => void) => {
     }
     if (initialTask) {
       dispatch(updateTask(task));
+      toast.success("Task updated successfully!");
+      
     } else {
       dispatch(createTask(task));
+      toast.success("Task created successfully!");
     }
     if (onClose) onClose();
   };

@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { fetchTasks, createTask, updateTask, deleteTask } from "../redux/features/tasks/taskActions";
 import { selectTasks } from "../redux/features/tasks/selectors";
 import { Task } from "../types/taskTypes";
+import { toast } from "react-toastify";
 
 export const useTaskManager = () => {
   const dispatch = useAppDispatch();
@@ -40,6 +41,7 @@ export const useTaskManager = () => {
   const handleDeleteTask = () => {
     if (taskToDelete) {
       dispatch(deleteTask(taskToDelete.id));
+      toast.success("Task deleted successfully!");
     }
     setTaskToDelete(null);
     setIsDeleteModalOpen(false);

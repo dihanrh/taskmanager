@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TaskList from "../components/task/TaskList";
-import SearchComponent from "../components/common/SearchComponent";
-import PriorityFilter from "../components/common/PriorityFilter";
+import SearchComponent from "../components/base/SearchComponent";
+import PriorityFilter from "../components/base/PriorityFilter";
 
 const Home: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");

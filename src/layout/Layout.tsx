@@ -2,6 +2,8 @@ import React from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import Home from "../pages/Home";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Layout: React.FC = () => {
   return (
@@ -13,6 +15,15 @@ const Layout: React.FC = () => {
           <Home />
         </div>
       </div>
+      <ToastContainer
+      position="top-right"
+      autoClose={3000}
+      hideProgressBar
+      newestOnTop
+      closeOnClick
+      pauseOnHover
+      draggable
+    />
     </div>
   );
 };
