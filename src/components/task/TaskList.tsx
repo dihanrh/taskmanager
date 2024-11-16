@@ -4,7 +4,11 @@ import ConfirmationModal from "../common/ConfirmationModal";
 import TaskForm from "./TaskForm";
 import { formatDate } from "../../utils/formatDate";
 
-const TaskList: React.FC = () => {
+interface TaskListProps {
+  searchQuery: string;
+}
+
+const TaskList: React.FC<TaskListProps> = ({ searchQuery }) => {
   const {
     tasks,
     editingTask,
@@ -17,13 +21,19 @@ const TaskList: React.FC = () => {
     closeDeleteModal,
   } = useTaskManager();
 
+  // Filter tasks based on the search query
+  const filteredTasks = tasks.filter((task) =>
+    task.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4 dark:text-white">Task List</h1>
-
       {isFormOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <TaskForm initialTask={editingTask || undefined} onClose={closeForm} />
+          <TaskForm
+            initialTask={editingTask || undefined}
+            onClose={closeForm}
+          />
         </div>
       )}
 
@@ -37,14 +47,16 @@ const TaskList: React.FC = () => {
       )}
 
       <ul className="space-y-2">
-        {tasks.map((task) => (
+        {filteredTasks.map((task) => (
           <li
             key={task.id}
             className="p-4 border rounded flex flex-col space-y-2 dark:border-gray-700"
           >
             <div>
               <h3 className="font-bold dark:text-white">{task.title}</h3>
-              <h3 className="font-bold dark:text-white">Category: {task.category || "General"}</h3>
+              <h3 className="font-bold dark:text-white">
+                Category: {task.category || "General"}
+              </h3>
               <p className="dark:text-gray-300">{task.description}</p>
               <p className="dark:text-gray-500">
                 <strong>Created At:</strong> {formatDate(task.createdAt)}
@@ -72,6 +84,9 @@ const TaskList: React.FC = () => {
             </div>
           </li>
         ))}
+        {filteredTasks.length === 0 && (
+          <p className="text-gray-500 dark:text-gray-300">No tasks found.</p>
+        )}
       </ul>
     </div>
   );
