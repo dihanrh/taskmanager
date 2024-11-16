@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Modal from "../components/common/Modal";
 import TaskForm from "../components/task/TaskForm";
 import DarkModeToggle from "../components/common/DarkModeToggle";
+import { FaPlus } from "react-icons/fa"; // Import FaPlus from react-icons
 
 const Navbar: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,10 +16,10 @@ const Navbar: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button
-              className="px-4 py-2 bg-blue-500 text-white rounded"
+              className="flex items-center px-4 py-2 bg-blue-500 text-white rounded"
               onClick={handleOpenModal}
             >
-              Add Task
+              <FaPlus className="mr-2" /> Add Task
             </button>
           </div>
           <div className="flex items-center space-x-4">
