@@ -86,6 +86,22 @@ const TaskForm: React.FC<TaskFormProps> = ({ initialTask, onClose }) => {
         </select>
       </div>
       <div className="my-2">
+        <label className="block text-sm dark:text-gray-300">Category</label>
+        <select
+          value={task.category}
+          onChange={(e) =>
+            setTask({ ...task, category: e.target.value as Task["category"] })
+          }
+          className="w-full border rounded px-2 py-1 dark:bg-gray-700 dark:text-white"
+        >
+          <option value="Management">Management</option>
+          <option value="Frontend">Frontend</option>
+          <option value="Backend">Backend</option>
+          <option value="UI">UI</option>
+          <option value="DevOps">DevOps</option>
+        </select>
+      </div>
+      <div className="my-2">
         <label className="block text-sm dark:text-gray-300">Tags</label>
         <CreatableSelect
           isMulti

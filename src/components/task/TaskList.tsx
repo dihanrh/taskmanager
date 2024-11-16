@@ -14,6 +14,7 @@ const TaskList: React.FC = () => {
     confirmDeleteTask,
     isDeleteModalOpen,
     handleDeleteTask,
+    closeDeleteModal,
   } = useTaskManager();
 
   return (
@@ -31,7 +32,7 @@ const TaskList: React.FC = () => {
           title="Delete Task"
           message={`Are you sure you want to delete the task "${editingTask?.title}"?`}
           onConfirm={handleDeleteTask}
-          onCancel={closeForm}
+          onCancel={closeDeleteModal}
         />
       )}
 
@@ -43,6 +44,7 @@ const TaskList: React.FC = () => {
           >
             <div>
               <h3 className="font-bold dark:text-white">{task.title}</h3>
+              <h3 className="font-bold dark:text-white">Category: {task.category || "General"}</h3>
               <p className="dark:text-gray-300">{task.description}</p>
               <p className="dark:text-gray-500">
                 <strong>Created At:</strong> {formatDate(task.createdAt)}

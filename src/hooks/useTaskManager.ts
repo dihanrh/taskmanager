@@ -32,6 +32,11 @@ export const useTaskManager = () => {
     setIsDeleteModalOpen(true);
   };
 
+  const closeDeleteModal = () => {
+    setTaskToDelete(null);
+    setIsDeleteModalOpen(false);
+  };
+
   const handleDeleteTask = () => {
     if (taskToDelete) {
       dispatch(deleteTask(taskToDelete.id));
@@ -58,6 +63,7 @@ export const useTaskManager = () => {
     confirmDeleteTask,
     isDeleteModalOpen,
     handleDeleteTask,
+    closeDeleteModal,
     saveTask,
   };
 };

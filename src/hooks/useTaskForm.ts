@@ -18,6 +18,7 @@ export const useTaskForm = (initialTask?: Task, onClose?: () => void) => {
       dueDate: "",
       createdAt: new Date().toISOString(),
       priority: "Low",
+      category:"Management",
       tags: [],
     }
   );
