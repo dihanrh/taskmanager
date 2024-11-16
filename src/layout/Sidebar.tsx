@@ -1,16 +1,54 @@
-import React from 'react';
+import React, { useState } from "react";
+import { FaBars, FaTimes,  FaHome, FaCog  } from "react-icons/fa";
 
 const Sidebar: React.FC = () => {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+  const toggleSidebar = () => setIsSidebarCollapsed(!isSidebarCollapsed);
+
   return (
-    <div className="w-64 bg-gray-900 text-white flex flex-col justify-between">
-      <div className="p-4 text-center font-bold text-lg">
-        Task Manager
+    <div
+      className={`fixed inset-0 md:left-0 transition-all duration-300 ease-in-out z-50 ${
+        isSidebarCollapsed ? "w-16" : "w-64"
+      } ${
+        isSidebarCollapsed ? "md:w-16" : "md:w-64"
+      } bg-gray-900 dark:bg-gray-800 h-full`}
+    >
+      <div className="p-4">
+        {/* Sidebar Toggle Button */}
+        <button
+          onClick={toggleSidebar}
+          className="text-white text-2xl focus:outline-none"
+        >
+          {isSidebarCollapsed ? <FaBars /> : <FaTimes />}
+        </button>
+
+        {/* Sidebar Content */}
+        <h2
+          className={`text-white font-bold text-2xl mt-4 ${
+            isSidebarCollapsed ? "hidden" : ""
+          }`}
+        >
+          Task Manager
+        </h2>
+
+        <ul className={`mt-4 space-y-2 ${isSidebarCollapsed ? "hidden" : ""}`}>
+          <li className="text-white">Tasks</li>
+          <li className="text-white">Settings</li>
+        </ul>
+
+        {/* Icon-only content when sidebar is collapsed */}
+        <ul
+          className={`mt-4 space-y-2 ${!isSidebarCollapsed ? "hidden" : ""}`}
+        >
+          <li className="text-white text-2xl">
+          <FaHome />
+          </li>
+          <li className="text-white text-2xl">
+          <FaCog />
+          </li>
+        </ul>
       </div>
-      <ul >
-        <li>
-          <a href="#" className="block py-2 px-4 hover:bg-gray-700">All Tasks</a>
-        </li>
-      </ul>
     </div>
   );
 };

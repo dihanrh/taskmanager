@@ -7,10 +7,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="p-6">
-      {/* Search Bar */}
       <SearchComponent onSearch={setSearchQuery} placeholder="Search tasks..." />
-
-      {/* Task List */}
       <TaskList searchQuery={searchQuery} />
     </div>
   );
