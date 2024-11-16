@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import { useTaskManager } from "../../hooks/useTaskManager";
 import ConfirmationModal from "../common/ConfirmationModal";
 import TaskForm from "./TaskForm";
@@ -10,9 +10,10 @@ import { Task } from "../../types/taskTypes";
 
 interface TaskListProps {
   searchQuery: string;
+  priority: string;
 }
 
-const TaskList: React.FC<TaskListProps> = ({ searchQuery }) => {
+const TaskList: React.FC<TaskListProps> = ({ searchQuery, priority }) => {
   const {
     tasks,
     editingTask,
@@ -27,18 +28,18 @@ const TaskList: React.FC<TaskListProps> = ({ searchQuery }) => {
 
   const [selectedTask, setSelectedTask] = useState<Task>();
 
-  const filteredTasks = tasks.filter((task) =>
-    task.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter tasks by search query and priority
+  const filteredTasks = tasks.filter((task) => {
+    const matchesSearch = task.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesPriority = priority ? task.priority === priority : true;
+    return matchesSearch && matchesPriority;
+  });
 
   return (
     <div className="space-y-4">
       {isFormOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <TaskForm
-            initialTask={editingTask || undefined}
-            onClose={closeForm}
-          />
+          <TaskForm initialTask={editingTask || undefined} onClose={closeForm} />
         </div>
       )}
 
@@ -52,10 +53,7 @@ const TaskList: React.FC<TaskListProps> = ({ searchQuery }) => {
       )}
 
       {selectedTask && (
-        <TaskDetails
-          task={selectedTask}
-          onClose={() => setSelectedTask(undefined)}
-        />
+        <TaskDetails task={selectedTask} onClose={() => setSelectedTask(undefined)} />
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -83,9 +81,7 @@ const TaskList: React.FC<TaskListProps> = ({ searchQuery }) => {
             <p className="text-sm text-gray-500 dark:text-gray-400">
               <strong>Priority:</strong>{" "}
               <span
-                className={`inline-block px-4 py-2 rounded-full mt-2 ${getPriorityColor(
-                  task.priority
-                )}`}
+                className={`inline-block px-4 py-2 rounded-full mt-2 ${getPriorityColor(task.priority)}`}
               >
                 {task.priority}
               </span>
