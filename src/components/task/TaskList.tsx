@@ -1,47 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { fetchTasks, deleteTask } from "../../redux/features/tasks/taskActions";
-import { selectTasks } from "../../redux/features/tasks/selectors";
-import TaskForm from "./TaskForm";
+import React from "react";
+import { useTaskManager } from "../../hooks/useTaskManager";
 import ConfirmationModal from "../common/ConfirmationModal";
-import { Task } from "../../types/taskTypes";
+import TaskForm from "./TaskForm";
 import { formatDate } from "../../utils/formatDate";
 
 const TaskList: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const tasks = useAppSelector(selectTasks);
-
-  const [editingTask, setEditingTask] = useState<Task | null>(null);
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
-  useEffect(() => {
-    dispatch(fetchTasks());
-  }, [dispatch]);
-
-  const openForm = (task?: Task) => {
-    setEditingTask(task || null);
-    setIsFormOpen(true);
-  };
-
-  const closeForm = () => {
-    setEditingTask(null);
-    setIsFormOpen(false);
-  };
-
-  const confirmDeleteTask = (task: Task) => {
-    setTaskToDelete(task);
-    setIsDeleteModalOpen(true);
-  };
-
-  const handleDeleteTask = () => {
-    if (taskToDelete) {
-      dispatch(deleteTask(taskToDelete.id));
-    }
-    setTaskToDelete(null);
-    setIsDeleteModalOpen(false);
-  };
+  const {
+    tasks,
+    editingTask,
+    isFormOpen,
+    openForm,
+    closeForm,
+    confirmDeleteTask,
+    isDeleteModalOpen,
+    handleDeleteTask,
+  } = useTaskManager();
 
   return (
     <div>
@@ -56,9 +29,9 @@ const TaskList: React.FC = () => {
       {isDeleteModalOpen && (
         <ConfirmationModal
           title="Delete Task"
-          message={`Are you sure you want to delete the task "${taskToDelete?.title}"?`}
+          message={`Are you sure you want to delete the task "${editingTask?.title}"?`}
           onConfirm={handleDeleteTask}
-          onCancel={() => setIsDeleteModalOpen(false)}
+          onCancel={closeForm}
         />
       )}
 
@@ -79,20 +52,6 @@ const TaskList: React.FC = () => {
               </p>
               <p className="dark:text-gray-500">
                 <strong>Priority:</strong> {task.priority}
-              </p>
-              <p className="dark:text-gray-500">
-                <strong>Tags:</strong>{" "}
-                {task.tags.length > 0 ? (
-                  <ul className="list-disc ml-5">
-                    {task.tags.map((tag) => (
-                      <li key={tag.id} className="dark:text-gray-300">
-                        {tag.name}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  "No tags"
-                )}
               </p>
             </div>
             <div className="flex justify-end space-x-2">

@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Task } from "../../types/taskTypes";
-import { Tag } from "../../types/tagTypes";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { createTask, updateTask } from "../../redux/features/tasks/taskActions";
-import { fetchTags, createTag } from "../../redux/features/tag/tagActions";
+import React, { useState } from "react";
 import CreatableSelect from "react-select/creatable";
-import { MultiValue } from "react-select";
 import ConfirmationModal from "../common/ConfirmationModal";
+import { useTaskForm } from "../../hooks/useTaskForm";
+import { Task} from "../../types/taskTypes";
 
 interface TaskFormProps {
   initialTask?: Task;
@@ -14,82 +10,35 @@ interface TaskFormProps {
 }
 
 const TaskForm: React.FC<TaskFormProps> = ({ initialTask, onClose }) => {
+  const {
+    task,
+    setTask,
+    tags,
+    loading,
+    handleTagChange,
+    handleCreateTag,
+    saveTask,
+  } = useTaskForm(initialTask, onClose);
+
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const dispatch = useAppDispatch();
-  const { tags, loading } = useAppSelector((state) => state.tags);
 
-  const [task, setTask] = useState<Task>(
-    initialTask || {
-      id: 0,
-      title: "",
-      description: "",
-      dueDate: "",
-      createdAt: new Date().toISOString(),
-      priority: "Low",
-      tags: [],
-    }
-  );
-
-  useEffect(() => {
-    dispatch(fetchTags());
-    if (initialTask) {
-      setTask(initialTask);
-    }
-  }, [dispatch, initialTask]);
-
-  const handleCreateTag = async (inputValue: string) => {
-    const newTag: Partial<Tag> = { name: inputValue };
-    const result = await dispatch(createTag(newTag));
-
-    if (result.meta.requestStatus === "fulfilled") {
-      setTask((prevTask) => ({
-        ...prevTask,
-        tags: [...prevTask.tags, result.payload as Tag],
-      }));
-    }
-  };
-
-  const handleTagChange = (
-    selectedOptions: MultiValue<{ value: string; label: string }>
-  ) => {
-    const selectedTags: Tag[] = selectedOptions.map((opt) => ({
-      id: opt.value,
-      name: opt.label,
-    }));
-    setTask({
-      ...task,
-      tags: selectedTags,
-    });
-  };
+  const tagOptions = tags.map((tag) => ({
+    value: tag.id.toString(),
+    label: tag.name,
+  }));
 
   const confirmSaveTask = () => {
-    if (task.title.trim() === "") {
-      alert("Task title is required.");
+    if (!task.title.trim()) {
+      alert("Title is required!");
       return;
     }
     setShowConfirmation(true);
   };
 
-  const handleSubmit = () => {
-    if (task.title.trim() === "") {
-      alert("Task title is required.");
-      return;
-    }
-
-    if (initialTask) {
-      dispatch(updateTask(task));
-    } else {
-      dispatch(createTask(task));
-    }
-    onClose();
+  const handleConfirmSave = () => {
+    saveTask();
+    setShowConfirmation(false);
   };
-
-  const tagOptions = tags.map((tag) => ({
-    value: tag.id,
-    label: tag.name,
-  }));
-
-  console.log(fetchTags);
 
   return (
     <div className="p-4 bg-white dark:bg-gray-800 rounded shadow">
@@ -142,7 +91,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ initialTask, onClose }) => {
           isMulti
           isLoading={loading}
           options={tagOptions}
-          value={task.tags.map((tag) => ({ value: tag.id, label: tag.name }))}
+          value={task.tags.map((tag) => ({ value: tag.id.toString(), label: tag.name }))}
           onChange={handleTagChange}
           onCreateOption={handleCreateTag}
           className="dark:text-black"
@@ -166,7 +115,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ initialTask, onClose }) => {
         <ConfirmationModal
           title="Save Task"
           message="Are you sure you want to save this task?"
-          onConfirm={handleSubmit}
+          onConfirm={handleConfirmSave}
           onCancel={() => setShowConfirmation(false)}
         />
       )}
