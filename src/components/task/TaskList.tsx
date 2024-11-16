@@ -90,6 +90,23 @@ const TaskList: React.FC<TaskListProps> = ({ searchQuery }) => {
                 {task.priority}
               </span>
             </p>
+
+            <strong className="dark:text-gray-300">Tags:</strong>
+            {task.tags.length > 0 ? (
+              <div className="flex flex-wrap gap-2 mt-2">
+                {task.tags.map((tag) => (
+                  <span
+                    key={tag.id}
+                    className="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded text-gray-700 dark:text-gray-300"
+                  >
+                    {tag.name}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <p className="dark:text-gray-400">No tags</p>
+            )}
+
             <div className="flex justify-between mt-auto space-x-2">
               <button>
                 <FiEdit className="mr-2" onClick={() => openForm(task)} />
