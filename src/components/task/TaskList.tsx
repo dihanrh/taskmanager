@@ -46,7 +46,7 @@ const TaskList: React.FC<TaskListProps> = ({ searchQuery, priority }) => {
       {isDeleteModalOpen && (
         <ConfirmationModal
           title="Delete Task"
-          message={`Are you sure you want to delete the task "${editingTask?.title}"?`}
+          message={`Are you sure you want to delete the task ?`}
           onConfirm={handleDeleteTask}
           onCancel={closeDeleteModal}
         />

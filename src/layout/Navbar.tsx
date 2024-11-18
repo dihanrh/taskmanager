@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Modal from "../components/common/Modal";
 import TaskForm from "../components/task/TaskForm";
+import { FaPlus } from "react-icons/fa";
 import DarkModeToggle from "../components/common/DarkModeToggle";
-import { FaPlus } from "react-icons/fa"; // Import FaPlus from react-icons
+
 
 const Navbar: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -9,13 +9,13 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   onCancel,
 }) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded shadow-md w-80">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 ">
+      <div className="bg-white p-6 rounded shadow-md w-80 dark:bg-gray-700">
         <h2 className="text-lg font-bold mb-2">{title}</h2>
         <p className="mb-4">{message}</p>
         <div className="flex justify-end space-x-4">
           <button
-            className="px-4 py-2 bg-gray-300 rounded"
+            className="px-4 py-2 bg-gray-300 rounded dark:bg-gray-500"
             onClick={onCancel}
           >
             Cancel
