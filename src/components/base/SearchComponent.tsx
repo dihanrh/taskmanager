@@ -19,7 +19,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
   };
 
   return (
-    <div className="relative flex items-center space-x-2">
+    <div className="relative flex items-center space-x-2 ">
       <FiSearch className="absolute left-3 text-gray-500" />
       
       <input
@@ -27,7 +27,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
         value={query}
         onChange={handleInputChange}
         placeholder={placeholder}
-        className="pl-10 p-2 border rounded" 
+        className="pl-10 p-2 border rounded dark:bg-gray-500" 
       />
     </div>
   );
